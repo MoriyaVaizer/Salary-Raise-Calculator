@@ -1,0 +1,143 @@
+<div class="app-viewport" dir="rtl">
+  <div class="header-bg"></div>
+
+  <main class="main-content">
+    <header class="hero-section">
+      <div class="icon-badge">
+        <mat-icon>payments</mat-icon>
+        </svg>
+      </div>
+      <h1>מחשבון שכר חכם</h1>
+      <p>מערכת סימולציה מתקדמת לחישוב העלאות ותנאי העסקה</p>
+    </header>
+
+    <mat-card class="main-calculator-card">
+      <mat-card-header>
+        <mat-card-title>נתוני העסקה</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="salaryForm" (ngSubmit)="calculate()" class="form-container">
+
+          <div class="input-grid">
+            <!-- חלקיות משרה -->
+            <mat-form-field appearance="outline" class="custom-field">
+              <mat-label>חלקיות משרה</mat-label>
+              <mat-select formControlName="percentage">
+                <mat-option [value]="100">100% (משרה מלאה)</mat-option>
+                <mat-option [value]="75">75% (3/4 משרה)</mat-option>
+                <mat-option [value]="50">50% (חצי משרה)</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>pie_chart</mat-icon>
+            </mat-form-field>
+
+            <!-- רמה מקצועית -->
+            <mat-form-field appearance="outline" class="custom-field">
+              <mat-label>רמה מקצועית</mat-label>
+              <mat-select formControlName="profLevel">
+                <mat-option value="Beginner">מתחיל</mat-option>
+                <mat-option value="Experienced">מנוסה</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>engineering</mat-icon>
+            </mat-form-field>
+
+            <!-- רמה ניהולית -->
+            <mat-form-field appearance="outline" class="custom-field">
+              <mat-label>רמה ניהולית</mat-label>
+              <mat-select formControlName="adminLevel">
+                <mat-option [value]="0">ללא תפקיד ניהולי</mat-option>
+                <mat-option [value]="1">רמת ניהול 1</mat-option>
+                <mat-option [value]="2">רמת ניהול 2</mat-option>
+                <mat-option [value]="3">רמת ניהול 3</mat-option>
+                <mat-option [value]="4">רמת ניהול 4</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>military_tech</mat-icon>
+            </mat-form-field>
+
+            <!-- ותק -->
+            <mat-form-field appearance="outline" class="custom-field">
+              <mat-label>שנות ותק</mat-label>
+              <input matInput type="number" formControlName="seniority">
+              <mat-icon matSuffix>history</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <!-- זכאות בחוק -->
+          <div class="extra-options-panel">
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-title">זכאות לתוספת עבודה בחוק</span>
+                <span class="toggle-sub">תוספת ייחודית בגין מינוי רשמי</span>
+              </div>
+              <mat-slide-toggle formControlName="eligibleForLaw" color="primary"
+                class="modern-toggle"></mat-slide-toggle>
+            </div>
+
+            <div class="radio-group-container" *ngIf="salaryForm.get('eligibleForLaw')?.value">
+              <label>בחר קבוצת שיוך:</label>
+              <mat-radio-group formControlName="bonusGroup">
+                <mat-radio-button value="A">קבוצה א'</mat-radio-button>
+                <mat-radio-button value="B">קבוצה ב'</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button mat-flat-button class="calculate-btn" type="submit" [disabled]="!salaryForm.valid">
+              חשב את השכר שלי
+              <mat-icon>analytics</mat-icon>
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- תוצאות -->
+    @if (result()) {
+    <section id="results-area" class="results-section">
+      <div class="section-title">
+        <mat-icon>receipt_long</mat-icon>
+        <h2>סיכום חישוב</h2>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">שכר יסוד מותאם</span>
+          <span class="stat-value">{{result()?.baseSalaryByPercentage | number:'1.2-2'}} ₪</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">תוספת ותק ({{result()?.seniorityBonusPercent}}%)</span>
+          <span class="stat-value highlight-up">+ {{result()?.seniorityBonusAmount | number:'1.2-2'}} ₪</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">תוספת חוק</span>
+          <span class="stat-value highlight-up">+ {{result()?.legalBonusAmount | number:'1.2-2'}} ₪</span>
+        </div>
+      </div>
+
+      <div class="final-report-card">
+        <div class="report-row">
+          <span>שכר בסיס לפני העלאה:</span>
+          <span class="amount">{{result()?.totalBeforeIncrease | number:'1.2-2'}} ₪</span>
+        </div>
+        <div class="report-row">
+          <span>שיעור העלאת שכר:</span>
+          <span class="badge">{{result()?.increaseRatePercent}}%</span>
+        </div>
+        <div class="report-row border-top">
+          <span>סכום העלאה חודשי:</span>
+          <span class="amount highlight-up">+ {{result()?.increaseAmount | number:'1.2-2'}} ₪</span>
+        </div>
+
+        <div class="final-sum-banner">
+          <div class="sum-label">שכר בסיס חדש לתשלום</div>
+          <div class="sum-value">{{result()?.totalAfterIncrease | number:'1.2-2'}} ₪</div>
+        </div>
+      </div>
+    </section>}
+  </main>
+
+  <footer class="page-footer">
+    מערכת ניהול שכר ארגונית © {{currentYear}}
+  </footer>
+</div>

@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+/* חובה פעם אחת */
+@include mat.core();
+
+// Custom styles
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-mdc-option:hover,
+.mat-mdc-option.mdc-list-item--selected,
+.mat-mdc-option.mdc-list-item--activated {
+  background-color: #f5f5f5 !important; /* או לבן */
+}
+
+.mat-mdc-input-element[type=number]::-webkit-inner-spin-button,
+.mat-mdc-input-element[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mat-mdc-input-element[type=number] {
+  -moz-appearance: textfield;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
