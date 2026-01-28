@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
 
 namespace SalaryCalculatorApi.Models
 {
@@ -8,7 +8,7 @@ namespace SalaryCalculatorApi.Models
         public double Percentage { get; set; }
 
         [Required]
-        public string ProfLevel { get; set; }
+        public ProfLevel ProfLevel { get; set; }
 
         [Range(0, 4)]
         public int AdminLevel { get; set; }
@@ -19,7 +19,7 @@ namespace SalaryCalculatorApi.Models
         public bool EligibleForLaw { get; set; }
 
         [Required]
-        public string BonusGroup { get; set; }
+        public BonusGroup BonusGroup { get; set; }
     }
 
 }

@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ICalculationService, CalculationService>();
+builder.Services.AddScoped<ISalaryService, SalaryService>();
 
 builder.Services.AddControllers();
 

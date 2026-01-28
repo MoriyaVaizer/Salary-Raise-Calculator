@@ -1,50 +1,46 @@
-using SalaryCalculatorApi.Models;
 
-public class CalculationService : ICalculationService
+public class SalaryService : ISalaryService
 {
-    // Example calculation: some CPU-light async operation
-  
-
-    public SalaryResponse CalculateSalary(SalaryRequest request)
+    public async Task<SalaryResponse> CalculateSalary(SalaryRequest request)
     {
-        // א. חישוב שכר יסוד שעתי
-        double hourlyRate = request.ProfLevel == "Experienced" ? 120 : 100;
+        // חישוב שכר יסוד שעתי
+        double hourlyRate = request.ProfLevel == ProfLevel.Experienced ? 120 : 100;
 
-        // תוספת ניהולית לשכר השעתי (20 ש"ח לכל דרגה)
+        // תוספת ניהולית לשכר השעתי 
         int adminLevelValue = request.AdminLevel;
         hourlyRate += (adminLevelValue * 20);
 
-        // שכר יסוד חודשי לפי חלקיות משרה (משרה מלאה = 170 שעות)
+        // שכר יסוד חודשי לפי חלקיות משרה 
         double baseSalary = (request.Percentage / 100.0) * 170 * hourlyRate;
 
-        // ב. תוספת וותק (1.25% לכל שנה מלאה)
+        // תוספת וותק    
         int seniorityYears = (int)Math.Floor(request.Seniority);
         double seniorityPercent = seniorityYears * 1.25;
         double seniorityBonus = (seniorityPercent / 100.0) * baseSalary;
 
-        // ג. תוספת עבודה מתוקף חוק
+        // תוספת עבודה מתוקף חוק
         double lawBonus = 0;
         if (request.EligibleForLaw)
         {
-            double lawPercent = request.BonusGroup == "A" ? 1.0 : 0.5;
+            double lawPercent = request.BonusGroup == BonusGroup.GroupA ? 1.0 : 0.5;
             lawBonus = (lawPercent / 100.0) * baseSalary;
         }
 
-        // ד. שכר בסיס לפני העלאה
+        //  שכר בסיס לפני העלאה
         double totalBaseBeforeIncrease = baseSalary + seniorityBonus + lawBonus;
 
-        // ה. חישוב שיעור העלאת שכר
+        // חישוב שיעור העלאת שכר
         double increasePercent = 0;
         if (totalBaseBeforeIncrease <= 20000) increasePercent = 1.5;
         else if (totalBaseBeforeIncrease <= 30000) increasePercent = 1.25;
         else increasePercent = 1.0;
 
-        // תוספת ניהולית להעלאה (0.1% לכל רמה)
+        // תוספת ניהולית להעלאה 
         increasePercent += (adminLevelValue * 0.1);
 
         double increaseAmount = (increasePercent / 100.0) * totalBaseBeforeIncrease;
 
-        // ו. שכר בסיס חדש
+        // שכר בסיס חדש
         double newBaseSalary = totalBaseBeforeIncrease + increaseAmount;
 
         return new SalaryResponse

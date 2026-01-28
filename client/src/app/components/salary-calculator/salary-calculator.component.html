@@ -1,0 +1,36 @@
+<div class="app-viewport" dir="rtl">
+  <div class="header-bg"></div>
+
+  <main class="main-content">
+    <header class="hero-section">
+      <div class="icon-badge">
+        <mat-icon>payments</mat-icon>
+      </div>
+      <h1>מחשבון שכר חכם</h1>
+      <p>מערכת סימולציה מתקדמת לחישוב העלאת שכר</p>
+    </header>
+    <app-salary-calculator-form [salaryForm]="salaryForm" [loading]="loading" (submitCalculation)="calculate()">
+    </app-salary-calculator-form>
+
+
+
+
+
+
+    @if (loading) {
+    <div class="spinner-container">
+      <mat-progress-spinner mode="indeterminate" color="primary" diameter="50">
+      </mat-progress-spinner>
+      <p>טוען נתונים, נא להמתין...</p>
+    </div>
+    }
+    @if (result(); as r) {
+    <app-salary-calculation-result [result]="r">
+    </app-salary-calculation-result>
+    }
+  </main>
+
+  <footer class="page-footer">
+    מערכת ניהול שכר ארגונית © {{currentYear}} | מוריה מן
+  </footer>
+</div>
