@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { SalaryResult } from '../../services/salary.service';
+import { SalaryResult } from '../../interfaces/salary-result.interface';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 

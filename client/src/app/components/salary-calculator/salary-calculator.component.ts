@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SalaryResult, SalaryService } from '../../services/salary.service';
+import { SalaryService } from '../../services/salary.service';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProfLevel } from '../../enums/prof-level.enum';
@@ -8,6 +8,7 @@ import { BonusGroup } from '../../enums/bonus-group.enum';
 import { SalaryCalculatorFormComponent } from '../salary-calculator-form/salary-calculator-form.component';
 import { SalaryCalculationResultComponent } from '../salary-calculation-result/salary-calculation-result.component';
 import { MatIconModule } from '@angular/material/icon';
+import { SalaryResult } from '../../interfaces/salary-result.interface';
 
 @Component({
   selector: 'app-salary-calculator',
